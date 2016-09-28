@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="welcome-container text-center">
+    <h1>Whole of Gov</h1>
+    <h3>WOG</h3>
+  </div>
+
+  <div class="how-container">
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table">
+          <caption>
+            <p>Customers on WOG</p>
+          </caption>
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Email</th>
+              <th>Card</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if customers %}
+            {% for cus in customers %}
+              <tr>
+                <td>{{ cus.id }}</td>
+                <td>{{ cus.email }}</td>
+                <td>{{ cus.sources.data[0].brand }} card ending {{ cus.sources.data[0].last4 }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+          <tr>
+            <td><strong>No customers</strong></td>
+          </tr>
+          {% endif %}
+          </tbody>
+        </table>
+        <p>
+          <form action="/customers" method="POST">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ key }}"
+              data-name="WOG"
+              data-description="Add Card Details"
+              data-image="{{ url_for('static', filename='stripe.jpg') }}"
+              data-locale="auto"
+              data-panel-label="Add Card Details"
+              data-label="Add New Customer"
+              data-allow-remember-me=false
+            >
+            </script>
+          </form>
+        </p>
+        <p>
+          Test cards <a href="https://stripe.com/docs/testing#cards" target="blank">here</a>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <table class="table">
+          <caption>
+            <p>Agencies connected to WOG</p>
+          </caption> 
+          <thead>
+            <tr>
+              <th>Account ID</th>
+              <th>Business Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if agencies %}
+            {% for ag in agencies %}
+              <tr>
+                <td>{{ ag.id }}</td>
+                <td>{{ ag.business_name }}</td>
+                <td>{{ ag.email }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td><strong>No agencies</strong></td>
+            </tr>
+          {% endif %}
+          </tbody>
+        </table>
+        <p>
+          <a href="{{ url_for('authorize') }}">
+            <img class="button" src="/static/img/stripe-connect.png" alt="Stripe Connect Button">
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="how-container">
+    <table class="table">
+      <caption>
+        <p>Charges</p>
+      </caption> 
+      <thead>
+        <tr>
+          <th>Charge ID</th>
+          <th>Amount</th>
+          <th>Account</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if charges %}
+        {% for item in charges %}
+          {% for charge in item.charges %}
+          <tr>
+            <td>{{ charge.id }}</td>
+            <td>{{ charge.currency }} {{ charge.amount/100 }}</td>
+            <td>{{ item.account }}</td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td><strong>No charges</strong></td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+
+    <table class="table">
+      <caption>
+        <p>Charge Customer on Agency</p>
+      </caption>
+    </table>
+    <form class="form-inline" action="/charge" method="POST">
+      <div class="form-group">
+        <label for="customer">Customer</label>
+        <input type="text" class="form-control" name="customer" placeholder="cus_...">
+      </div>
+      <div class="form-group">
+        <label for="agency">Agency</label>
+        <input type="text" class="form-control" name="agency" placeholder="acct_...">
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount (in cents)</label>
+        <input type="number" class="form-control" name="amount" placeholder="1200">
+      </div>
+      <button type="submit" class="btn btn-default">Charge</button>
+    </form>
+
+  </div>
+
+  <hr>
+
+  <footer>
+    <div class="row text-center">
+      <div class="col-md-6">
+        Stripe IDA Demo
+      </div>
+      <div class="col-md-6">
+        Questions? Email: <a href="mailto:nikunj@stripe.com?Subject=Stripe%20IDA%20Demo" target="_top">nikunj@stripe.com</a>
+      </div>
+    </div>
+  </footer>
+{% endblock %}
