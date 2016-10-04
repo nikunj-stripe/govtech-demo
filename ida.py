@@ -41,13 +41,26 @@ def home():
       'account': ag.id,
       'charges': stripe.Charge.list(stripe_account=ag.id).data
     })
-  print(charges)
   return render_template(
     'home.html',
-    key = app.config['PUBLISHABLE_KEY'],
     customers = customers,
     agencies = agencies,
     charges = charges
+  )
+
+# Customers
+@app.route('/customers', methods=['GET'])
+def customer_view():
+  return render_template(
+    'customers.html',
+    key = app.config['PUBLISHABLE_KEY'],
+  )
+
+# Agency
+@app.route('/agencies', methods=['GET'])
+def agency_view():
+  return render_template(
+    'agencies.html'
   )
 
 # Add customer
@@ -62,7 +75,7 @@ def add_customer():
   )
 
   flash('Customer added: ' + customer.id)
-  return redirect(url_for('home'))
+  return redirect(url_for('customer_view'))
 
 # Add agency
 @app.route('/authorize')
@@ -79,6 +92,8 @@ def authorize():
   url = site + '?' + urllib.parse.urlencode(params)
   return redirect(url)
 
+# http://stripe-ida-demo.herokuapp.com/stripe/redirect
+# http://0.0.0.0:5000/stripe/redirect
 
 @app.route('/stripe/redirect')
 def callback():
@@ -100,7 +115,7 @@ def callback():
           data.get('error') + ']', 'warning')
 
   flash('Agency connected: ' + data.get('stripe_user_id'))
-  return redirect(url_for('home'))
+  return redirect(url_for('agency_view'))
 
 # Create charge
 @app.route('/charge', methods=['POST'])

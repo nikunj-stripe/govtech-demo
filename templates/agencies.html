@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="welcome-container text-center">
+    <h1>Whole of Gov</h1>
+    <h3>Add an agency</h3>
+  </div>
+
+  <div class="how-container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <a href="{{ url_for('authorize') }}">
+            <img class="button" src="/static/img/stripe-connect.png" alt="Stripe Connect Button">
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <footer>
+    <div class="row text-center">
+      <div class="col-md-6">
+        Stripe IDA Demo
+      </div>
+      <div class="col-md-6">
+        Questions? Email: <a href="mailto:nikunj@stripe.com?Subject=Stripe%20IDA%20Demo" target="_top">nikunj@stripe.com</a>
+      </div>
+    </div>
+  </footer>
+{% endblock %}

@@ -35,25 +35,6 @@
           {% endif %}
           </tbody>
         </table>
-        <p>
-          <form action="/customers" method="POST">
-            <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="{{ key }}"
-              data-name="WOG"
-              data-description="Add Card Details"
-              data-image="{{ url_for('static', filename='stripe.jpg') }}"
-              data-locale="auto"
-              data-panel-label="Add Card Details"
-              data-label="Add New Customer"
-              data-allow-remember-me=false
-            >
-            </script>
-          </form>
-        </p>
-        <p>
-          Test cards <a href="https://stripe.com/docs/testing#cards" target="blank">here</a>
-        </p>
       </div>
       <div class="col-md-6">
         <table class="table">
@@ -83,11 +64,6 @@
           {% endif %}
           </tbody>
         </table>
-        <p>
-          <a href="{{ url_for('authorize') }}">
-            <img class="button" src="/static/img/stripe-connect.png" alt="Stripe Connect Button">
-          </a>
-        </p>
       </div>
     </div>
   </div>

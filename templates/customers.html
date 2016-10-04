@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="welcome-container text-center">
+    <h1>Whole of Gov</h1>
+    <h3>Add card details</h3>
+  </div>
+
+  <div class="how-container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <form action="/customers" method="POST">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ key }}"
+              data-name="WOG"
+              data-description="Add Card Details"
+              data-image="{{ url_for('static', filename='stripe.jpg') }}"
+              data-locale="auto"
+              data-panel-label="Add Card Details"
+              data-label="Add Card Details"
+              data-allow-remember-me=false
+            >
+            </script>
+          </form>
+        </p>
+        <p>
+          Test cards <a href="https://stripe.com/docs/testing#cards" target="blank">here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <footer>
+    <div class="row text-center">
+      <div class="col-md-6">
+        Stripe IDA Demo
+      </div>
+      <div class="col-md-6">
+        Questions? Email: <a href="mailto:nikunj@stripe.com?Subject=Stripe%20IDA%20Demo" target="_top">nikunj@stripe.com</a>
+      </div>
+    </div>
+  </footer>
+{% endblock %}
